@@ -1,5 +1,4 @@
 body {
-    /*font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;*/
     background: linear-gradient(135deg, #242624, #48484a);
     color: #8e8e93;
     margin: 0;
@@ -8,6 +7,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+#main-container {
+    display: flex;
+    position: relative;
 }
 
 #home {
@@ -18,9 +23,13 @@ body {
     text-align: center;
     padding: 30px;
     border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #2c2c2e;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+    z-index: 2;
+    width: 440px;
+    height: 235px;
 }
 
 #title h1 {
@@ -31,13 +40,22 @@ body {
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #ebebf0;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1s forwards;
 }
+
 #text p {
     font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 1.2em;
     font-weight: 300;
     line-height: 1.5;
     color: #bcbcc0;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1.5s forwards cubic-bezier(0.25, 1.75, 0.5, 1);
+    animation-delay: 1s;
+    font-weight: bold;
 }
 
 #home:hover {
@@ -45,45 +63,75 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
-#title h1 {
+#slider1, #slider2 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 300px;
+    background-color: #2c2c2e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#slider1 {
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#slider2 {
+    right: 50%;
+    transform: translateX(50%) translateY(-50%);
+}
+
+#home:hover ~ #slider1 {
+    display: block;
+    animation: slideLeft 1.5s forwards, moveUpDown 5s infinite alternate;
+}
+
+#home:hover ~ #slider2 {
+    display: block;
+    animation: slideRight 1.5s forwards, moveUpDown 5s infinite alternate;
+}
+
+#slider1 h1, #slider2 h1 {
+    font-family: 'Workspace', sans-serif;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ebebf0;
     opacity: 0;
     transform: translateY(30px);
-    animation: fadeIn 1s forwards;
+    animation: slideIn 1s forwards;
 }
 
-#text p {
+#slider1 p, #slider2 p {
+    font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #bcbcc0;
     opacity: 0;
-    transform:  translateY(30px);
-    animation: fadeIn 1.5s forwards cubic-bezier(0.25, 1.75, 0.5, 1);
-}
-
-#title h1 {
+    transform: translateY(30px);
+    animation: slideIn 1.5s forwards cubic-bezier(0.25, 1.75, 0.5, 1);
     animation-delay: 0.5s;
 }
 
-#text p {
-    animation-delay: 1s;
+#slider1, #slider2 {
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
 }
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes showBurgerMenu {
-    0% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-}
-
-
 
 .burger-icon {
     width: 30px;
@@ -95,7 +143,7 @@ body {
     cursor: pointer;
     z-index: 20;
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 45px;
 }
 
@@ -114,8 +162,9 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 10;
+    z-index: 3;
     padding: 15px;
+    text-align: center;
     list-style-type: none;
     display: none;
     flex-direction: column;
@@ -131,7 +180,7 @@ body {
     font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     opacity: 0;
     transform: translateY(-20px);
-    animation: showBurgerMenu 0.5s forwards cubic-bezier(0.25, 1.75, 0.5, 1);
+    animation: showBurgerMenu 1.5s forwards cubic-bezier(0.25, 1.75, 0.5, 1);
     animation-delay: calc(0.1s * var(--i));
     pointer-events: auto;
     margin-top: 10px;
@@ -164,11 +213,13 @@ body {
     }
 }
 
+/* Font Space */
+
 @font-face {
     font-family: 'Workspace';
     src: url('../fonts/Workspace.woff2') format('woff2'),
          url('../fonts/workspace-regular.woff') format('woff'),
-         url('../fonts/workspace-regular.otf') format('opentype'); /* Fallback */
+         url('../fonts/workspace-regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -177,12 +228,87 @@ body {
     font-family: 'Workspace';
     src: url('../fonts/workspace-bold.woff2') format('woff2'),
          url('../fonts/workspace-bold.woff') format('woff'),
-         url('../fonts/workspace-bold.otf') format('opentype'); /* Fallback */
+         url('../fonts/workspace-bold.otf') format('opentype');
     font-weight: bold;
     font-style: normal;
 }
 
+/* Animation Space */
 
-#slider1 {
-    display: none;
+/* BurgerMenu Animation */
+
+@keyframes showBurgerMenu {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+/* SlideIn Animation */
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide Left Animation */
+
+@keyframes slideLeft {
+    0% {
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        left: -500px;
+        transform: translateX(0) translateY(-50%);
+        opacity: 1;
+    }
+}
+
+/* Slide Right Animation */
+
+@keyframes slideRight {
+    0% {
+        right: 50%;
+        transform: translateX(50%) translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        right: -500px;
+        transform: translateX(0) translateY(-50%);
+        opacity: 1;
+    }
+}
+
+/* Move Up And Down Animation */
+
+@keyframes moveUpDown {
+    0% {
+        transform: translateY(-50%);
+    }
+    25% {
+        transform: translateY(-53%);
+    }
+    75% {
+        transform: translateY(-43%);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+/* FadeIn Animation */
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
